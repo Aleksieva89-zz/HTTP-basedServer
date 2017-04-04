@@ -1,8 +1,8 @@
-package user;
+package app;
 
 import org.springframework.data.repository.CrudRepository;
 
-import user.User;
+import app.User;
 
 public interface UserRepository extends CrudRepository<User, Long> {
 

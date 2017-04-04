@@ -1,17 +1,15 @@
-package user;
+package app;
 
 import java.util.Iterator;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
-
-import user.User;
-import user.UserRepository;
 
 @Controller
 @RequestMapping(path="/users") 
@@ -19,35 +17,27 @@ public class UsersController {
 	@Autowired 
 	private UserRepository userRepository;
 	
-	@GetMapping(path="/register") // Map ONLY GET Requests
-	public @ResponseBody String addNewUser(@RequestParam String user_name
-			, @RequestParam String password) {
-		if(getUserIfExists(user_name, password) != null) {
+	@PostMapping(path="/register")
+	public @ResponseBody String addNewUser(@ModelAttribute User user) {
+		if(getUserIfExists(user.getUserName(), user.getPassword()) != null) {
 			return "User alredy exists";
 		} else {
-			User u = new User();
-			u.setUserName(user_name);
-			u.setPassword(password);
-			userRepository.save(u);
+			userRepository.save(user);
 			return "Saved";
 		}
 	}
 	
 	@GetMapping(path="/all")
 	public @ResponseBody Iterable<User> getAllUsers() {
-		// This returns a JSON or XML with the users
 		return userRepository.findAll();
 	}
 	
-	@GetMapping(path="/login")
-	public @ResponseBody Boolean loginUser(@RequestParam String user_name
-			, @RequestParam String password) {
-		User u = getUserIfExists(user_name, password);
+	@PostMapping(path="/login")
+	public @ResponseBody Boolean loginUser(@ModelAttribute User user) {
+		User u = getUserIfExists(user.getUserName(), user.getPassword());
 		if(u != null) {
-			ModelAndView mv = new ModelAndView();
-			mv.setViewName("/timestamp/userLoggedIn");
-			mv.addObject("user", u);
-			return modelAndView;
+			//add timeStamp
+			return true;
 		} else {
 			return false;
 		}
