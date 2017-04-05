@@ -1,5 +1,7 @@
 package app;
 
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -14,8 +16,6 @@ public class Timestamp {
 	
 	private Long date;
     
-//    @JoinColumn(name = "id")
-//    @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY)
     private Integer user_id;
     
     public Long getDate() {
@@ -26,11 +26,11 @@ public class Timestamp {
     	this.date = date;
     }
     
-    public int getId() {
+    public Integer getId() {
 		return id;
 	}
 
-	public int getUserId() {
+	public Integer getUserId() {
 		return user_id;
 	}
 
@@ -38,4 +38,7 @@ public class Timestamp {
 		this.user_id = user_id;
 	}
 
+	public String getDateString() {
+		return new Date(date).toString();
+	}
 }

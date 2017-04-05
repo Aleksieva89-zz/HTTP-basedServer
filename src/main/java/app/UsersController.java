@@ -4,6 +4,7 @@ import java.util.Iterator;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,13 +34,12 @@ public class UsersController {
 	}
 	
 	@PostMapping(path="/login")
-	public @ResponseBody Boolean loginUser(@ModelAttribute User user) {
+	public String loginUser(@ModelAttribute("user") User user) {
 		User u = getUserIfExists(user.getUserName(), user.getPassword());
 		if(u != null) {
-			//add timeStamp
-			return true;
+			return "redirect:/timestamp/userLoggedIn?userId="+u.getId();
 		} else {
-			return false;
+			return "/invalidUser";
 		}
  	}
 	
